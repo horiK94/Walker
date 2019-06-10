@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
-    /// <summary>
-    /// PlayerのRigidbodyコンポーネントの参照s
-    /// </summary>
     [SerializeField]
-    private Rigidbody rigidbody = null;
+    private Animator animator = null;
 
     /// <summary>
     /// キャラ移動量
@@ -64,6 +61,7 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
+        animator.SetBool("isStop", false);
     }
 
     private void Update()
@@ -97,7 +95,15 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
+        GetComponent<Rigidbody>().MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
         mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
+        if(playerMoveVec.magnitude > 0.1f)
+        {
+            animator.SetBool("isStop", false);
+        }
+        else
+        {
+            animator.SetBool("isStop", true);
+        }
     }
 }
