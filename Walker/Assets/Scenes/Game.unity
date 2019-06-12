@@ -546,9 +546,10 @@ MonoBehaviour:
   roteateSpeed: 3
   cameraTargetTranform: {fileID: 1586170305}
   cameraMoveNext: {fileID: 278840882}
-  maxRotateX: 45
+  maxRotateY: 45
   minRotateY: -20
-  rotateSpeed: 80
+  rotateSpeed: 1
+  cameraDistance: 5
 --- !u!1 &1586170304
 GameObject:
   m_ObjectHideFlags: 0

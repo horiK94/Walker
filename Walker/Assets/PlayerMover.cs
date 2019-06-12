@@ -34,7 +34,7 @@ public class PlayerMover : MonoBehaviour
     /// 最大X回転角度(～90°～ 90°)
     /// </summary>
     [SerializeField]
-    private float maxRotateX = 45.0f;
+    private float maxRotateY = 45.0f;
     /// <summary>
     /// 最小X回転角度(～90°～ 90°)
     /// </summary>
@@ -77,8 +77,27 @@ public class PlayerMover : MonoBehaviour
 
         rotateZ += Input.GetAxis("Horizontal2") * Time.deltaTime * rotateSpeed;
         rotateY += Input.GetAxis("Vertical2") * Time.deltaTime * rotateSpeed;
-        mainCameraTranfrom.position = new Vector3(cameraDistance * Mathf.Cos(rotateZ) * Mathf.Cos(rotateY), -cameraDistance * Mathf.Sin(rotateY), cameraDistance * Mathf.Sin(rotateZ)) + transform.position;
+        rotateY = Mathf.Clamp(rotateY, minRotateY * Mathf.Deg2Rad, maxRotateY * Mathf.Deg2Rad);
+        mainCameraTranfrom.position = new Vector3(-cameraDistance * Mathf.Cos(rotateZ) * Mathf.Cos(rotateY), cameraDistance * Mathf.Sin(rotateY), -cameraDistance * Mathf.Cos(rotateY) * Mathf.Sin(rotateZ)) + transform.position;
         mainCameraTranfrom.LookAt(transform);
+
+        //カメラの移動
+        //TODO InputManagerを使用する形へ変更予定
+        /*
+        cameraMoveVec = Vector3.forward * Input.GetAxis("Vertical2") + Vector3.left * Input.GetAxis("Horizontal2");
+        cameraTargetTranform.rotation = Quaternion.Euler(0, mainCameraTranfrom.rotation.eulerAngles.y, 0);
+        cameraMoveNext.rotation = mainCameraTranfrom.rotation;
+
+        cameraMoveNext.RotateAround(transform.position, cameraTargetTranform.transform.right, cameraMoveVec.z * rotateSpeed * Time.deltaTime);
+        cameraMoveNext.RotateAround(transform.position, cameraTargetTranform.transform.up, cameraMoveVec.x * rotateSpeed * Time.deltaTime);
+        mainCameraTranfrom.RotateAround(transform.position, cameraTargetTranform.transform.up, cameraMoveVec.x * rotateSpeed * Time.deltaTime);
+        aaaaaaaaaaaaaa
+        if (Mathf.Abs(cameraMoveNext.eulerAngles.x) <= maxRotateX || cameraMoveNext.eulerAngles.x >= Mathf.PI * 2 * Mathf.Rad2Deg + minRotateY)
+        {
+            mainCameraTranfrom.RotateAround(transform.position, cameraTargetTranform.transform.right, cameraMoveVec.z * rotateSpeed * Time.deltaTime);
+        }
+        */
+
 
         //プレイヤーの移動
         playerMoveVec = mainCameraTranfrom.forward * Input.GetAxis("Vertical") + mainCameraTranfrom.right * Input.GetAxis("Horizontal");
