@@ -56,6 +56,11 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     float rotateAngle = 0;
 
+    [SerializeField]
+    private float cameraDistance = 5;
+    float rotateY = 0;
+    float rotateZ = 0;
+
     Vector3 playerMoveVec = Vector3.zero;
 
     private void Awake()
@@ -70,24 +75,14 @@ public class PlayerMover : MonoBehaviour
         Vector3 cameraMoveVec = Vector3.zero;
         playerMoveVec = Vector3.zero;
 
-        //カメラの移動
-        //TODO InputManagerを使用する形へ変更予定
-        cameraMoveVec = Vector3.forward * Input.GetAxis("Vertical2") + Vector3.left * Input.GetAxis("Horizontal2");
-        cameraTargetTranform.rotation = Quaternion.Euler(0, mainCameraTranfrom.rotation.eulerAngles.y, 0);
-        cameraMoveNext.rotation = mainCameraTranfrom.rotation;
-
-        cameraMoveNext.RotateAround(transform.position, cameraTargetTranform.transform.right, cameraMoveVec.z * rotateSpeed * Time.deltaTime);
-        cameraMoveNext.RotateAround(transform.position, cameraTargetTranform.transform.up, cameraMoveVec.x * rotateSpeed * Time.deltaTime);
-        mainCameraTranfrom.RotateAround(transform.position, cameraTargetTranform.transform.up, cameraMoveVec.x * rotateSpeed * Time.deltaTime);
-
-        if (Mathf.Abs(cameraMoveNext.eulerAngles.x) <= maxRotateX || cameraMoveNext.eulerAngles.x >= Mathf.PI * 2 * Mathf.Rad2Deg + minRotateY)
-        {
-            mainCameraTranfrom.RotateAround(transform.position, cameraTargetTranform.transform.right, cameraMoveVec.z * rotateSpeed * Time.deltaTime);
-        }
+        rotateZ += Input.GetAxis("Horizontal2") * Time.deltaTime * rotateSpeed;
+        rotateY += Input.GetAxis("Vertical2") * Time.deltaTime * rotateSpeed;
+        mainCameraTranfrom.position = new Vector3(cameraDistance * Mathf.Cos(rotateZ) * Mathf.Cos(rotateY), -cameraDistance * Mathf.Sin(rotateY), cameraDistance * Mathf.Sin(rotateZ)) + transform.position;
+        mainCameraTranfrom.LookAt(transform);
 
         //プレイヤーの移動
         playerMoveVec = mainCameraTranfrom.forward * Input.GetAxis("Vertical") + mainCameraTranfrom.right * Input.GetAxis("Horizontal");
-        if(playerMoveVec.magnitude > 0.1f)
+        if (playerMoveVec.magnitude > 0.1f)
         {
             transform.localRotation = Quaternion.LookRotation(new Vector3(playerMoveVec.x, 0, playerMoveVec.z));
         }
@@ -97,7 +92,7 @@ public class PlayerMover : MonoBehaviour
     {
         GetComponent<Rigidbody>().MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
         mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
-        if(playerMoveVec.magnitude > 0.1f)
+        if (playerMoveVec.magnitude > 0.1f)
         {
             animator.SetBool("isStop", false);
         }
