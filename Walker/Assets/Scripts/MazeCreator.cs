@@ -8,11 +8,12 @@ using UnityEngine;
 /// </summary>
 public enum eStageType
 {
-    FLOOR = 0,       //何もない(床)
-    BLOCK = 1,      //ブロック(通過不可)
-    CEILING = 2,    //天井(通過可能)
-    START = 10,     //スタート位置
-    GOAL = 11,      //ゴール位置
+    FLOOR = 0,          //何もない(床)
+    BLOCK = 1,          //壁(通過不可)
+    CEILING = 2,        //天井(通過可能)
+    START = 10,         //スタート位置
+    GOAL = 11,          //ゴール位置
+    OUTER_WALL = 20,    //外枠の壁
 }
 
 public class MazeCreator
@@ -44,19 +45,27 @@ public class MazeCreator
     /// </summary>
     private eStageType[,] mazeInfo = null;
 
-    public eStageType[,] CreateMaze(int _width, int _height, Vector2Int _startIndex, Vector2Int _goalIndex, float _ceilingPercent)
+    /// <summary>
+    /// 迷路生成
+    /// </summary>
+    /// <param name="_stageSize"></param>
+    /// <param name="_startIndex"></param>
+    /// <param name="_goalIndex"></param>
+    /// <param name="_ceilingPercent"></param>
+    /// <returns></returns>
+    public eStageType[,] CreateMaze(Vector2Int _stageSize, Vector2Int _startIndex, Vector2Int _goalIndex, float _ceilingPercent)
     {
-        width = _width;
-        height = _height;
+        width = _stageSize.x;
+        height = _stageSize.y;
         goalIndex = _goalIndex;
         ceilingPrecentage = _ceilingPercent;
 
         //迷路に必要な要素が満たされているかチェック
-        if (_width < 5 || _height < 5)
+        if (width < 5 || height < 5)
         {
             throw new ArgumentOutOfRangeException("_width, _height", "5より大きいサイズを指定して下さい");
         }
-        if (_width % 2 == 0 || _height % 2 == 0)
+        if (width % 2 == 0 || height % 2 == 0)
         {
             throw new ArgumentOutOfRangeException("_width, _height", "奇数の値を指定して下さい");
         }
@@ -69,13 +78,13 @@ public class MazeCreator
             throw new ArgumentOutOfRangeException("_goalIndex", "偶数の値を指定して下さい");
         }
 
-        mazeInfo = new eStageType[_width, _height];
+        mazeInfo = new eStageType[width, height];
         digCandidate = new List<Vector2Int>();
 
         //すべてブロックで埋める
-        for (int i = 0; i < _width; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int k = 0; k < _height; k++)
+            for (int k = 0; k < height; k++)
             {
                 mazeInfo[i, k] = eStageType.BLOCK;
             }
@@ -171,6 +180,7 @@ public class MazeCreator
     /// <summary>
     /// 引数方向の位置を掘れるか
     /// </summary>
+    /// <param name="_position"></param>
     /// <returns></returns>
     private bool isDig(Vector2Int _position)
     {
@@ -212,7 +222,8 @@ public class MazeCreator
     /// <summary>
     /// ステージ情報取得
     /// </summary>
-    /// <param name="_position"></param>
+    /// <param name="_x"></param>
+    /// <param name="_y"></param>
     /// <returns></returns>
     private eStageType getStageType(int _x, int _y)
     {
@@ -242,7 +253,8 @@ public class MazeCreator
     /// <summary>
     /// ステージ情報の設定
     /// </summary>
-    /// <param name="_position"></param>
+    /// <param name="_x"></param>
+    /// <param name="_y"></param>
     /// <param name="_stageType"></param>
     private void setStageType(int _x, int _y, eStageType _stageType)
     {
