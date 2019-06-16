@@ -53,6 +53,7 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
+        mainCameraTranfrom.Rotate(new Vector3(0, (maxRotateY + minRotateY) / 2, 0));
         animator.SetBool("isStop", false);
     }
 

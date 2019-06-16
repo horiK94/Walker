@@ -91,8 +91,6 @@ public class StageManager : MonoBehaviour
         stageSize = new Vector2Int(
             roomCount.x * ROOM_SIZE.x + wallCandidate.x * WALL_CANDIDATE_THICKNESS + 2 * OUTER_WALL_THICKNESS,
             roomCount.y * ROOM_SIZE.y + wallCandidate.y * WALL_CANDIDATE_THICKNESS + 2 * OUTER_WALL_THICKNESS);
-
-        CreateStage();
     }
 
     /// <summary>
@@ -188,7 +186,7 @@ public class StageManager : MonoBehaviour
     private eStageType[,] setStageTypeForRange(eStageType[,] _mazeData, eStageType _setType, Vector2Int _startPoint, Vector2Int _endPoint)
     {
         eStageType[,] data = _mazeData;
-        if(_endPoint.x > stageSize.x)
+        if (_endPoint.x > stageSize.x)
         {
             throw new ArgumentOutOfRangeException("_endPoint", "xの値が不正です");
         }
@@ -226,7 +224,7 @@ public class StageManager : MonoBehaviour
         mazeData = maze;
 
         //ステージの生成
-        createStageObject(maze);
+        createStageObject(mazeData);
     }
 
     /// <summary>
@@ -251,7 +249,7 @@ public class StageManager : MonoBehaviour
     /// スタート地点の中心点を返す
     /// </summary>
     /// <returns></returns>
-    public Vector3 getStartCenterPosition()
+    public Vector3 GetStartCenterPosition()
     {
         return getPurposeCenterPosition(eStageType.START);
     }
@@ -298,7 +296,7 @@ public class StageManager : MonoBehaviour
     {
         //(0, 0, 0)の位置に_x = 0, _y = 0のプレファブが置かれるようにする
         //outer_wallを除く一番下は床
-        if(_type != eStageType.OUTER_WALL)
+        if (_type != eStageType.OUTER_WALL)
         {
             Instantiate(floorPregfab, new Vector3(_x, 0, _y), Quaternion.identity, parentTransform);
         }
@@ -311,12 +309,12 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        for(int i = 1; i <= CEILING_HEIGHT; i++)
+        for (int i = 1; i <= CEILING_HEIGHT; i++)
         {
-            switch(_type)
+            switch (_type)
             {
                 case eStageType.CEILING:
-                    if(i == CEILING_HEIGHT)
+                    if (i == CEILING_HEIGHT)
                     {
                         //天井のときは一番高い高さのときのみ生成する
                         Instantiate(wallPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
