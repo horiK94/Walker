@@ -41,8 +41,20 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private Vector2Int stageSize = null;
 
+    /// <summary>
+    /// ステージ全体情報
+    /// </summary>
+    private eStageType[,] mazeData = null;
+
+    [SerializeField]
     [Range(0.0f, 1.0f)]
     private float ceilingPercentage = 0f;
+
+    /// <summary>
+    /// ステージ親オブジェクト
+    /// </summary>
+    [SerializeField]
+    private Transform parentTransform = null;
 
     /// <summary>
     /// 床プレファブ
@@ -57,29 +69,30 @@ public class StageManager : MonoBehaviour
     private GameObject wallPrefab = null;
 
     /// <summary>
+    /// 外枠プレファブ
+    /// </summary>
+    [SerializeField]
+    private GameObject wallOutPrefab = null;
+
+    /// <summary>
+    /// ゴール位置に置かれるプレファブ
+    /// </summary>
+    [SerializeField]
+    private GameObject goalPrefab = null;
+
+    /// <summary>
     /// 初期化
     /// </summary>
     private void Awake()
     {
+        //基本情報の設定
         Vector2Int roomCount = new Vector2Int(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.x / 2 + 1, STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.y / 2 + 1);
         Vector2Int wallCandidate = new Vector2Int(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.x - roomCount.x, STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.y - roomCount.y);
         stageSize = new Vector2Int(
             roomCount.x * ROOM_SIZE.x + wallCandidate.x * WALL_CANDIDATE_THICKNESS + 2 * OUTER_WALL_THICKNESS,
             roomCount.y * ROOM_SIZE.y + wallCandidate.y * WALL_CANDIDATE_THICKNESS + 2 * OUTER_WALL_THICKNESS);
 
-        //ステージデータ作成
-        MazeCreator mazeCreator = new MazeCreator();
-        eStageType[,] mazeData = mazeCreator.CreateMaze(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE, START_POINT, GOAL_POINT, ceilingPercentage);
-        eStageType[,] maze = convertMazeDataToStageSize(mazeData);
-        for (int i = 0; i < maze.GetLength(0); i++)
-        {
-            string str = "";
-            for (int k = 0; k < maze.GetLength(1); k++)
-            {
-                str += (int)maze[k, i] + ", ";
-            }
-            Debug.Log(str);
-        }
+        CreateStage();
     }
 
     /// <summary>
@@ -202,6 +215,80 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
+    /// ステージの生成
+    /// </summary>
+    public void CreateStage()
+    {
+        //ステージデータ作成
+        MazeCreator mazeCreator = new MazeCreator();
+        eStageType[,] mazeDataNotConsiderElementsSize = mazeCreator.CreateMaze(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE, START_POINT, GOAL_POINT, ceilingPercentage);
+        eStageType[,] maze = convertMazeDataToStageSize(mazeDataNotConsiderElementsSize);
+        mazeData = maze;
+
+        //ステージの生成
+        createStageObject(maze);
+    }
+
+    /// <summary>
+    /// ステージの生成
+    /// </summary>
+    /// <param name="_mazeData"></param>
+    private void createStageObject(eStageType[,] _mazeData)
+    {
+        //ステージの生成
+        for (int i = 0; i < _mazeData.GetLength(0); i++)
+        {
+            for (int k = 0; k < _mazeData.GetLength(1); k++)
+            {
+                createStageObjectToPoint(i, k, _mazeData[i, k]);
+            }
+        }
+        //ゴール位置にゴールプレファブを置く
+        Instantiate(goalPrefab, getGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform);
+    }
+
+    /// <summary>
+    /// スタート地点の中心点を返す
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 getStartCenterPosition()
+    {
+        return getPurposeCenterPosition(eStageType.START);
+    }
+
+    /// <summary>
+    /// ゴール地点の中心点を返す
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 getGoalCenterPosition()
+    {
+        return getPurposeCenterPosition(eStageType.GOAL);
+    }
+
+    /// <summary>
+    /// 特定のオブジェクトの中心点を返す
+    /// </summary>
+    /// <param name="_purposeType"></param>
+    /// <returns></returns>
+    private Vector3 getPurposeCenterPosition(eStageType _purposeType)
+    {
+        Vector3 sumGoalPosition = Vector3.zero;
+        int goalPositionCount = 0;
+        for (int i = 0; i < mazeData.GetLength(0); i++)
+        {
+            for (int k = 0; k < mazeData.GetLength(1); k++)
+            {
+                if (mazeData[i, k] == _purposeType)
+                {
+                    sumGoalPosition += new Vector3(i, 0, k);
+                    goalPositionCount++;
+                }
+            }
+        }
+        return sumGoalPosition / goalPositionCount;
+    }
+
+    /// <summary>
     /// 引数の位置にオブジェクトを置く
     /// </summary>
     /// <param name="_x"></param>
@@ -209,6 +296,41 @@ public class StageManager : MonoBehaviour
     /// <param name="_type"></param>
     private void createStageObjectToPoint(int _x, int _y, eStageType _type)
     {
+        //(0, 0, 0)の位置に_x = 0, _y = 0のプレファブが置かれるようにする
+        //outer_wallを除く一番下は床
+        if(_type != eStageType.OUTER_WALL)
+        {
+            Instantiate(floorPregfab, new Vector3(_x, 0, _y), Quaternion.identity, parentTransform);
+        }
 
+        if (_type == eStageType.FLOOR
+            || _type == eStageType.START
+            || _type == eStageType.GOAL)
+        {
+            //床の場合はこれ以上上に何も生成しないので終了
+            return;
+        }
+
+        for(int i = 1; i <= CEILING_HEIGHT; i++)
+        {
+            switch(_type)
+            {
+                case eStageType.CEILING:
+                    if(i == CEILING_HEIGHT)
+                    {
+                        //天井のときは一番高い高さのときのみ生成する
+                        Instantiate(wallPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
+                    }
+                    break;
+                case eStageType.BLOCK:
+                    //ブロックのときは一番高い高さまで生成する
+                    Instantiate(wallPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
+                    break;
+                case eStageType.OUTER_WALL:
+                    //外枠のときは一番高い高さまで生成する
+                    Instantiate(wallOutPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
+                    break;
+            }
+        }
     }
 }
