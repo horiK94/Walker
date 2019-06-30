@@ -45,16 +45,32 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     [SerializeField]
     private float cameraDistance = 5;
+
+    /// <summary>
+    /// 回転量Y
+    /// </summary>
     float rotateY = 0;
+    /// <summary>
+    /// 回転量Z
+    /// </summary>
     float rotateZ = 0;
 
+    /// <summary>
+    /// 移動方向のキャッシュ
+    /// </summary>
     Vector3 playerMoveVec = Vector3.zero;
+
+    /// <summary>
+    /// 物理コンポーネントのキャッシュ
+    /// </summary>
+    Rigidbody rigid = null;
 
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
         mainCameraTranfrom.Rotate(new Vector3(0, (maxRotateY + minRotateY) / 2, 0));
         animator.SetBool("isStop", false);
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -79,7 +95,7 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
+        rigid.MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
         mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
         if (playerMoveVec.magnitude > 0.1f)
         {
@@ -88,6 +104,14 @@ public class PlayerMover : MonoBehaviour
         else
         {
             animator.SetBool("isStop", true);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
+        {
+            rigid.constraints |= RigidbodyConstraints.FreezePositionY;
         }
     }
 }

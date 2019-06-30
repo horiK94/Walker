@@ -120,6 +120,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &754422417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3637979444170685780, guid: 95b7ad90f1cbf89498f3d18fffb24e5e,
+    type: 3}
+  m_PrefabInstance: {fileID: 803559790}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &754422419
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754422417}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 1, z: 1}
+  m_Center: {x: 1, y: 0, z: 0}
 --- !u!1001 &803559790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,8 +209,26 @@ PrefabInstance:
     - target: {fileID: 3637979444170685782, guid: 95b7ad90f1cbf89498f3d18fffb24e5e,
         type: 3}
       propertyPath: ceilingPercentage
-      value: 0
+      value: 0.211
       objectReference: {fileID: 0}
+    - target: {fileID: 3637979444170685782, guid: 95b7ad90f1cbf89498f3d18fffb24e5e,
+        type: 3}
+      propertyPath: colliderPrefab
+      value: 
+      objectReference: {fileID: 4892529277678105250, guid: 8f8f1f089a248424c80193e922ddf831,
+        type: 3}
+    - target: {fileID: 3637979444170685782, guid: 95b7ad90f1cbf89498f3d18fffb24e5e,
+        type: 3}
+      propertyPath: floorPregfab
+      value: 
+      objectReference: {fileID: 4930342461293147190, guid: 88061b938c9c49842b51185c95704b38,
+        type: 3}
+    - target: {fileID: 3637979444170685782, guid: 95b7ad90f1cbf89498f3d18fffb24e5e,
+        type: 3}
+      propertyPath: wallPrefab
+      value: 
+      objectReference: {fileID: 5351611848982270930, guid: 8943b4633614312418764ef6c5d8696a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95b7ad90f1cbf89498f3d18fffb24e5e, type: 3}
 --- !u!114 &1033464426 stripped
@@ -200,7 +237,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 803559790}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 754422417}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63e4d6f9756552a42a8b6e9a6943c2f7, type: 3}

@@ -42,8 +42,5 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
                 " アタッチされているGameObjectは " + Instance.gameObject.name + " です.");
             return;
         }
-
-        //DontDestroyOnLoad(this.gameObject);
     }
-
 }

@@ -54,8 +54,8 @@ public class Vector2Int
         return new Vector2Int(_x.x * _y, _x.y * _y);
     }
 
-    public static Vector2Int operator /(Vector2Int _x, int _y)
+    public static Vector2 operator /(Vector2Int _x, int _y)
     {
-        return new Vector2Int(_x.x / _y, _x.y / _y);
+        return new Vector2(_x.x / (float)_y, _x.y / (float)_y);
     }
 }

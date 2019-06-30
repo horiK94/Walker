@@ -69,10 +69,10 @@ public class StageManager : MonoBehaviour
     private GameObject wallPrefab = null;
 
     /// <summary>
-    /// 外枠プレファブ
+    /// コライダーオブジェクト
     /// </summary>
     [SerializeField]
-    private GameObject wallOutPrefab = null;
+    private GameObject colliderPrefab = null;
 
     /// <summary>
     /// ゴール位置に置かれるプレファブ
@@ -241,6 +241,9 @@ public class StageManager : MonoBehaviour
                 createStageObjectToPoint(i, k, _mazeData[i, k]);
             }
         }
+
+        //コライダーの作成
+        makeCollider();
         //ゴール位置にゴールプレファブを置く
         Instantiate(goalPrefab, getGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform);
     }
@@ -324,11 +327,151 @@ public class StageManager : MonoBehaviour
                     //ブロックのときは一番高い高さまで生成する
                     Instantiate(wallPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
                     break;
-                case eStageType.OUTER_WALL:
-                    //外枠のときは一番高い高さまで生成する
-                    Instantiate(wallOutPrefab, new Vector3(_x, i, _y), Quaternion.identity, parentTransform);
-                    break;
             }
         }
+    }
+
+    /// <summary>
+    /// コライダーの作成
+    /// </summary>
+    private void makeCollider()
+    {
+        //床のコライダー作成
+        GameObject floorColliderObj = Instantiate(colliderPrefab, parentTransform) as GameObject;
+        floorColliderObj.transform.position = new Vector3(stageSize.x, 0, stageSize.y) / 2;
+        floorColliderObj.GetComponent<BoxCollider>().size = new Vector3(stageSize.x, 1, stageSize.y);
+
+        //壁等のコライダー作成
+        var colliderPosList = calcColliderPositionList();
+        for (int i = 0; i < colliderPosList.Count; i++)
+        {
+            Vector2Int[] posInfo = colliderPosList[i];
+            Vector2Int startPos = posInfo[0];
+            Vector2Int goalPos = posInfo[1];
+
+            Vector3 centerPos = getCenterPosition(startPos, goalPos);
+            Vector3 size = getColliderSize(startPos, goalPos);
+
+            GameObject colliderObj = Instantiate(colliderPrefab, parentTransform) as GameObject;
+            colliderObj.transform.position = centerPos;
+            colliderObj.GetComponent<BoxCollider>().size = size;
+        }
+    }
+
+    /// <summary>
+    /// 引数のタイプがコライダーをアタッチするオブジェクトか
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    private bool isCollisionType(eStageType type)
+    {
+        return type == eStageType.BLOCK || type == eStageType.OUTER_WALL;
+    }
+
+    /// <summary>
+    /// コライダーを置く場所を受け取る
+    /// </summary>
+    /// <returns></returns>
+    private List<Vector2Int[]> calcColliderPositionList()
+    {
+        List<Vector2Int[]> colliderPosList = new List<Vector2Int[]>();
+        for (int i = 0; i < mazeData.GetLength(0); i++)
+        {
+            bool isCheck = false;
+            Vector2Int checkStartPos = null;
+            Vector2Int checkGoalPos = null;
+            for (int k = 0; k < mazeData.GetLength(1); k++)
+            {
+                eStageType type = mazeData[i, k];
+                if (!isCheck && isCollisionType(type))
+                {
+                    //ブロック
+                    isCheck = true;
+                    checkStartPos = new Vector2Int(i, k);
+                    continue;
+                }
+
+                if (isCheck && isCollisionType(type) && k != mazeData.GetLength(1) - 1)
+                {
+                    //調査開始後にブロックが続いている時
+                    checkGoalPos = new Vector2Int(i, k);
+                    continue;
+                }
+
+                if (isCheck && (!isCollisionType(type) || k == mazeData.GetLength(1) - 1))
+                {
+                    //調査開始後にブロックでないマスに来た時
+                    if (checkGoalPos != null)
+                    {
+                        //ここでcheckGoalPosがnullでなかったら2マス以上ブロックでないマスが続いていることになる
+                        colliderPosList.Add(new Vector2Int[] { checkStartPos, checkGoalPos });
+                    }
+                    isCheck = false;
+                    checkGoalPos = null;
+                }
+            }
+        }
+
+        for (int i = 0; i < mazeData.GetLength(0); i++)
+        {
+            bool isCheck = false;
+            Vector2Int checkStartPos = null;
+            Vector2Int checkGoalPos = null;
+            for (int k = 0; k < mazeData.GetLength(1); k++)
+            {
+                eStageType type = mazeData[k, i];
+                if (!isCheck && isCollisionType(type))
+                {
+                    //ブロック
+                    isCheck = true;
+                    checkStartPos = new Vector2Int(k, i);
+                    continue;
+                }
+
+                if (isCheck && isCollisionType(type) && k != mazeData.GetLength(1) - 1)
+                {
+                    //調査開始後にブロックが続いている時
+                    checkGoalPos = new Vector2Int(k, i);
+                    continue;
+                }
+
+                if (isCheck && (!isCollisionType(type) || k == mazeData.GetLength(1) - 1))
+                {
+                    //調査開始後にブロックでないマスに来た時
+                    if (checkGoalPos != null)
+                    {
+                        //ここでcheckGoalPosがnullでなかったら2マス以上ブロックでないマスが続いていることになる
+                        colliderPosList.Add(new Vector2Int[] { checkStartPos, checkGoalPos });
+                    }
+                    isCheck = false;
+                    checkGoalPos = null;
+                }
+            }
+        }
+
+        return colliderPosList;
+    }
+
+    /// <summary>
+    /// 中心座標を返す
+    /// </summary>
+    /// <param name="_startPos"></param>
+    /// <param name="_goalPos"></param>
+    /// <returns></returns>
+    private Vector3 getCenterPosition(Vector2Int _startPos, Vector2Int _goalPos)
+    {
+        Vector2 centerPos = (_startPos + _goalPos) / 2;
+        return new Vector3(centerPos.x, (CEILING_HEIGHT  + 1)/ 2.0f, centerPos.y);
+    }
+
+    /// <summary>
+    /// _startPosから_goalPosまで網羅するコライダーの大きさを返す
+    /// </summary>
+    /// <param name="_startPos"></param>
+    /// <param name="_goalPos"></param>
+    /// <returns></returns>
+    private Vector3 getColliderSize(Vector2Int _startPos, Vector2Int _goalPos)
+    {
+        return new Vector3(Mathf.Abs(_startPos.x - _goalPos.x) + 1, CEILING_HEIGHT, Mathf.Abs(_startPos.y - _goalPos.y) + 1);
     }
 }
