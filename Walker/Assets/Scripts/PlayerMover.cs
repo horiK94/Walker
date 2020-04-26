@@ -87,6 +87,7 @@ public class PlayerMover : MonoBehaviour
 
         //プレイヤーの移動
         playerMoveVec = mainCameraTranfrom.forward * Input.GetAxis("Vertical") + mainCameraTranfrom.right * Input.GetAxis("Horizontal");
+        playerMoveVec = playerMoveVec.normalized;
         if (playerMoveVec.magnitude > 0.1f)
         {
             transform.localRotation = Quaternion.LookRotation(new Vector3(playerMoveVec.x, 0, playerMoveVec.z));
