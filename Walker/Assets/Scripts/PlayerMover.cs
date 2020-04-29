@@ -8,15 +8,15 @@ public class PlayerMover : MonoBehaviour
     private Animator animator = null;
 
     /// <summary>
+    /// 移動とみなすしきい値
+    /// </summary>
+    [SerializeField]
+    private float moveThreshold = 0.1f;
+    /// <summary>
     /// キャラ移動量
     /// </summary>
     [SerializeField]
     private float moveAmount = 10f;
-    /// <summary>
-    /// 回転量
-    /// </summary>
-    [SerializeField]
-    private float roteateSpeed = 3f;
 
     /// <summary>
     /// 最大X回転角度(～90°～ 90°)
@@ -61,6 +61,11 @@ public class PlayerMover : MonoBehaviour
     Vector3 playerMoveVec = Vector3.zero;
 
     /// <summary>
+    /// 入力量キャッシュ
+    /// </summary>
+    float inputMagnitude = 0f;
+
+    /// <summary>
     /// 物理コンポーネントのキャッシュ
     /// </summary>
     Rigidbody rigid = null;
@@ -69,8 +74,11 @@ public class PlayerMover : MonoBehaviour
     {
         mainCameraTranfrom = Camera.main.transform;
         mainCameraTranfrom.Rotate(new Vector3(0, (maxRotateY + minRotateY) / 2, 0));
+
         animator.SetBool("isStop", false);
         rigid = GetComponent<Rigidbody>();
+
+        transform.LookAt(mainCameraTranfrom);
     }
 
     private void Update()
@@ -86,9 +94,11 @@ public class PlayerMover : MonoBehaviour
         mainCameraTranfrom.LookAt(transform);
 
         //プレイヤーの移動
-        playerMoveVec = mainCameraTranfrom.forward * Input.GetAxis("Vertical") + mainCameraTranfrom.right * Input.GetAxis("Horizontal");
-        playerMoveVec = playerMoveVec.normalized;
-        if (playerMoveVec.magnitude > 0.1f)
+        Vector3 inputVec = mainCameraTranfrom.forward * Input.GetAxis("Vertical") + mainCameraTranfrom.right * Input.GetAxis("Horizontal");
+        inputMagnitude = inputVec.magnitude;
+        playerMoveVec = inputVec.normalized;
+
+        if (inputMagnitude > 0.1f)
         {
             transform.localRotation = Quaternion.LookRotation(new Vector3(playerMoveVec.x, 0, playerMoveVec.z));
         }
@@ -96,20 +106,23 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigid.MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
-        mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
-        if (playerMoveVec.magnitude > 0.1f)
+        bool isStop = inputMagnitude <= moveThreshold;
+        animator.SetBool("isStop", isStop);
+
+        if (!isStop)
         {
-            animator.SetBool("isStop", false);
+            rigid.MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
+            mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
         }
         else
         {
-            animator.SetBool("isStop", true);
+            rigid.angularVelocity = Vector3.zero;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        //床に触れたらY座標を固定する
         if(rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
         {
             rigid.constraints |= RigidbodyConstraints.FreezePositionY;
