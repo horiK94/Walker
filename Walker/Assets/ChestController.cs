@@ -1,0 +1,32 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class ChestController : MonoBehaviour
+{
+    /// <summary>
+    /// パーティクルコントローラー
+    /// </summary>
+    [SerializeField]
+    private ChestParticleController particleController = null;
+
+    /// <summary>
+    /// コリジョンマネージャー
+    /// </summary>
+    [SerializeField]
+    private CollisionManager collisionManager = null;
+
+    public void Init(Action _onCollsionPlayer)
+    {
+        collisionManager.SetOnCollisionEnter((_collision) =>
+        {
+            //プレイヤーか判別
+            if (true)
+            {
+                particleController.PlayParticle();
+                _onCollsionPlayer();
+            }
+        });
+    }
+}

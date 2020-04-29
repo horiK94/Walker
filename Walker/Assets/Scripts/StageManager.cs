@@ -81,6 +81,11 @@ public class StageManager : MonoBehaviour
     private GameObject goalPrefab = null;
 
     /// <summary>
+    /// ゴールインスタンス
+    /// </summary>
+    public GameObject GoalInstance { get; private set; }
+
+    /// <summary>
     /// 初期化
     /// </summary>
     private void Awake()
@@ -245,7 +250,7 @@ public class StageManager : MonoBehaviour
         //コライダーの作成
         makeCollider();
         //ゴール位置にゴールプレファブを置く
-        Instantiate(goalPrefab, getGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform);
+        GoalInstance = Instantiate(goalPrefab, getGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform) as GameObject;
     }
 
     /// <summary>
