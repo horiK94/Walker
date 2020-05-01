@@ -17,6 +17,10 @@ public class ChestController : MonoBehaviour
     [SerializeField]
     private CollisionManager collisionManager = null;
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="_onCollsionPlayer"></param>
     public void Init(Action _onCollsionPlayer)
     {
         collisionManager.SetOnCollisionEnter((_collision) =>
