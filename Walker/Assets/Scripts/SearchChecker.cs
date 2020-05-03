@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSearcher : MonoBehaviour
+public class SearchChecker : MonoBehaviour
 {
     /// <summary>
     /// プレイヤーインスタンス
@@ -22,7 +22,7 @@ public class PlayerSearcher : MonoBehaviour
     /// プレイヤーの設定
     /// </summary>
     /// <param name="_playerTrans"></param>
-    public void SetPlayerInstance(Transform _playerTrans)
+    public void SetPlayerTransform(Transform _playerTrans)
     {
         playerTrans = _playerTrans;
     }
