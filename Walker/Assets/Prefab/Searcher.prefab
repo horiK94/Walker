@@ -81,7 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSearcher: {fileID: 9077292954744689338}
   searcherMover: {fileID: 9077292954744689339}
-  waitTime: 4
+  waitTime: 3
 --- !u!114 &9077292954744689339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbb1667ac8f7884b82dbccb1d63a280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  animator: {fileID: 3855305734338601704}
+  moveSpeed: 1.5
   rigid: {fileID: 3805924528125144044}
 --- !u!114 &9077292954744689338
 MonoBehaviour:
