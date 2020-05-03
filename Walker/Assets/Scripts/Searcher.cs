@@ -5,7 +5,7 @@ using UnityEngine;
 public class Searcher : MonoBehaviour
 {
     [SerializeField]
-    private PlayerSearcher playerSearcher = null;
+    private SearchChecker playerSearcher = null;
 
     [SerializeField]
     private SearcherMover searcherMover = null; 
@@ -32,14 +32,15 @@ public class Searcher : MonoBehaviour
     /// プレイヤーの設定
     /// </summary>
     /// <param name="_playerTrans"></param>
-    public void SetPlayerInstance(Transform _playerTrans)
+    public void SetPlayerTransform(Transform _playerTrans)
     {
         destinationPlayerTransform = _playerTrans;
-        playerSearcher.SetPlayerInstance(_playerTrans);
+        playerSearcher.SetPlayerTransform(_playerTrans);
     }
 
     private void Update()
     {
+        Debug.Log(currentState);
         remainTime -= Time.deltaTime;
         if (remainTime < 0)
         {
@@ -76,6 +77,7 @@ public class Searcher : MonoBehaviour
             if (currentState == State.DISCOVERY)
             {
                 currentState = State.SEARCH;
+                searcherMover.SearchStop();
             }
         }
     }
