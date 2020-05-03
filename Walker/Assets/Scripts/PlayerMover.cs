@@ -70,6 +70,10 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     Rigidbody rigid = null;
 
+    //TODO 後で削除
+    [SerializeField]
+    private Searcher playerSearcher = null;
+
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
@@ -79,6 +83,9 @@ public class PlayerMover : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
 
         transform.LookAt(mainCameraTranfrom);
+
+        //TODO 後で削除
+        playerSearcher.SetPlayerInstance(transform);
     }
 
     private void Update()
