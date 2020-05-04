@@ -31,6 +31,14 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 行動停止
+    /// </summary>
+    public void Pause()
+    {
+        playerMover.Pause();
+    }
+
+    /// <summary>
     /// 更新
     /// </summary>
     private void Update()

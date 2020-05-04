@@ -75,6 +75,10 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     public bool IsMove { get; private set; } = false;
 
+    /// <summary>
+    /// 停止中か
+    /// </summary>
+    private bool isPause = false;
 
     /// <summary>
     /// 初期化
@@ -91,10 +95,24 @@ public class PlayerMover : MonoBehaviour
     }
 
     /// <summary>
+    /// 行動停止
+    /// </summary>
+    public void Pause()
+    {
+        animator.SetBool("isStop", true);
+        isPause = true;
+    }
+
+    /// <summary>
     /// 更新
     /// </summary>
     private void Update()
     {
+        if (isPause)
+        {
+            return;
+        }
+
         //初期化
         Vector3 cameraMoveVec = Vector3.zero;
         playerMoveVec = Vector3.zero;
@@ -121,6 +139,12 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (isPause)
+        {
+            IsMove = false;
+            return;
+        }
+
         IsMove = inputMagnitude > moveThreshold;
         animator.SetBool("isStop", !IsMove);
 
@@ -143,7 +167,7 @@ public class PlayerMover : MonoBehaviour
     private void OnCollisionEnter(Collision _collision)
     {
         //床に触れたらY座標を固定する
-        if(rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
+        if (rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
         {
             rigid.constraints |= RigidbodyConstraints.FreezePositionY;
         }
