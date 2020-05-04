@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2026502321551075948}
   - component: {fileID: 4623590992729857571}
   - component: {fileID: 2610747171189964355}
-  m_Layer: 0
-  m_Name: GoalChestOpen
+  m_Layer: 11
+  m_Name: GoalChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 7354598450289988561}
   - component: {fileID: 7365572189961488691}
   - component: {fileID: 1843947660972991623}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ChestOpen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 7382709141040850279}
   - component: {fileID: 7355152484610433307}
   - component: {fileID: 7365501563928587241}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ChestHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6227529182462582046}
   - component: {fileID: 3414353001244640935}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Partsicles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,6 +305,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ConfettiBlastRainbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112205427271032732, guid: dbda11e43a271cf4a8c940d61a468768,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2112205427270995446, guid: dbda11e43a271cf4a8c940d61a468768,
         type: 3}
@@ -371,6 +376,16 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2112205427271226668, guid: dbda11e43a271cf4a8c940d61a468768,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112205427271030708, guid: dbda11e43a271cf4a8c940d61a468768,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 2112205427252528998, guid: dbda11e43a271cf4a8c940d61a468768,
         type: 3}
       propertyPath: playOnAwake
@@ -406,6 +421,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GoldCoinDirectional
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768676112379104631, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768676112393883435, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2768676112378636315, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
         type: 3}
@@ -462,7 +487,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2768676112393883435, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+    - target: {fileID: 2768676112378889827, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768676112378896941, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768676112379110467, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768676112393846643, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
         type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -473,11 +513,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2768676112393956981, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2768676112393846643, guid: 79794ac9bb0601d43ab87e44a96eb4ad,
         type: 3}
       propertyPath: playOnAwake
       value: 0

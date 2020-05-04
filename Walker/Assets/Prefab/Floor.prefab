@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4509560708931183632}
   - component: {fileID: 4536151707403144092}
   - component: {fileID: 4528304720056544174}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube_Stone1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1619237752485848001}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
