@@ -250,7 +250,7 @@ public class StageManager : MonoBehaviour
         //コライダーの作成
         makeCollider();
         //ゴール位置にゴールプレファブを置く
-        GoalInstance = Instantiate(goalPrefab, getGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform) as GameObject;
+        GoalInstance = Instantiate(goalPrefab, GetGoalCenterPosition() + Vector3.up, Quaternion.identity, parentTransform) as GameObject;
     }
 
     /// <summary>
@@ -266,9 +266,35 @@ public class StageManager : MonoBehaviour
     /// ゴール地点の中心点を返す
     /// </summary>
     /// <returns></returns>
-    private Vector3 getGoalCenterPosition()
+    public Vector3 GetGoalCenterPosition()
     {
         return getPurposeCenterPosition(eStageType.GOAL);
+    }
+
+    /// <summary>
+    /// 選択したステージタイプか
+    /// </summary>
+    /// <param name="_checkType"></param>
+    /// <param name="_checkPoint">(0, 0) ～</param>
+    /// <returns></returns>
+    private bool isSelectStageType(eStageType _checkType, Vector2Int _checkPoint)
+    {
+        if (!isInside(_checkPoint))
+        {
+            return false;
+        }
+
+        return _checkType == mazeData[_checkPoint.x, _checkPoint.y];
+    }
+
+    /// <summary>
+    /// ステージ内側位置か
+    /// </summary>
+    /// <param name="_checkPoint">(0, 0) ～</param>
+    /// <returns></returns>
+    private bool isInside(Vector2Int _checkPoint)
+    {
+        return _checkPoint.x >= 0 && _checkPoint.x < stageSize.x && _checkPoint.y >= 0 && _checkPoint.y < stageSize.y;
     }
 
     /// <summary>
@@ -466,7 +492,7 @@ public class StageManager : MonoBehaviour
     private Vector3 getCenterPosition(Vector2Int _startPos, Vector2Int _goalPos)
     {
         Vector2 centerPos = (_startPos + _goalPos) / 2;
-        return new Vector3(centerPos.x, (CEILING_HEIGHT  + 1)/ 2.0f, centerPos.y);
+        return new Vector3(centerPos.x, (CEILING_HEIGHT + 1) / 2.0f, centerPos.y);
     }
 
     /// <summary>
