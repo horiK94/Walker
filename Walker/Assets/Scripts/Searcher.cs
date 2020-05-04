@@ -8,7 +8,7 @@ public class Searcher : MonoBehaviour
     private SearchChecker playerSearcher = null;
 
     [SerializeField]
-    private SearcherMover searcherMover = null; 
+    private SearcherMover searcherMover = null;
 
     [SerializeField]
     private float waitTime = 4f;
@@ -26,6 +26,7 @@ public class Searcher : MonoBehaviour
     {
         SEARCH = 0,
         DISCOVERY = 1,
+        STOP = 2
     }
 
     /// <summary>
@@ -40,7 +41,11 @@ public class Searcher : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentState);
+        if (currentState == State.STOP)
+        {
+            return;
+        }
+
         remainTime -= Time.deltaTime;
         if (remainTime < 0)
         {
