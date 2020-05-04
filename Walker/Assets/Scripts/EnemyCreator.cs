@@ -7,9 +7,24 @@ public class EnemyCreator : MonoBehaviour
     [SerializeField]
     private GameObject searcherPrefab = null;
 
-    public void CreateSearcher(Transform _playerTrans, Vector3 _createPoint)
+    [SerializeField]
+    private GameObject pursuerPrefab = null;
+
+    /// <summary>
+    /// 探索者の生成
+    /// </summary>
+    /// <param name="_createPoint"></param>
+    public GameObject CreateSearcher(Vector3 _createPoint)
     {
-        GameObject searcher = Instantiate(searcherPrefab, _createPoint, Quaternion.identity);
-        searcher.GetComponent<Searcher>().SetPlayerTransform(_playerTrans);
+        return Instantiate(searcherPrefab, _createPoint, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// 追跡者の生成
+    /// </summary>
+    /// <param name="_createPoint"></param>
+    public GameObject CreatePursuer(Vector3 _createPoint)
+    {
+        return Instantiate(pursuerPrefab, _createPoint, Quaternion.identity);
     }
 }

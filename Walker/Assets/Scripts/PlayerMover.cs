@@ -70,10 +70,6 @@ public class PlayerMover : MonoBehaviour
     /// </summary>
     Rigidbody rigid = null;
 
-    [SerializeField]
-    private PurserMover purserMover = null;
-
-
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
@@ -83,8 +79,6 @@ public class PlayerMover : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
 
         transform.LookAt(mainCameraTranfrom);
-
-        purserMover.StartMove(transform);
     }
 
     private void Update()
