@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39ff3b79ecb98b41bca0c8569e0d2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSearcher: {fileID: 9077292954744689338}
+  searcherChecker: {fileID: 9077292954744689338}
   searcherMover: {fileID: 9077292954744689339}
   waitTime: 3
 --- !u!114 &9077292954744689339

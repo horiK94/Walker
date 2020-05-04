@@ -5,7 +5,7 @@ using UnityEngine;
 public class Searcher : MonoBehaviour
 {
     [SerializeField]
-    private SearchChecker playerSearcher = null;
+    private SearchChecker searcherChecker = null;
 
     [SerializeField]
     private SearcherMover searcherMover = null;
@@ -36,7 +36,16 @@ public class Searcher : MonoBehaviour
     public void SetPlayerTransform(Transform _playerTrans)
     {
         destinationPlayerTransform = _playerTrans;
-        playerSearcher.SetPlayerTransform(_playerTrans);
+        searcherChecker.SetPlayerTransform(_playerTrans);
+    }
+
+    /// <summary>
+    /// 動作停止
+    /// </summary>
+    public void Pause()
+    {
+        currentState = State.STOP;
+        searcherMover.SearchStop();
     }
 
     private void Update()
@@ -66,7 +75,7 @@ public class Searcher : MonoBehaviour
     private void search()
     {
         RaycastHit hit;
-        if (playerSearcher.SearchPlayer(out hit))
+        if (searcherChecker.SearchPlayer(out hit))
         {
             //発見
             switch (currentState)

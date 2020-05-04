@@ -106,6 +106,16 @@ public class PursuerMover : MonoBehaviour
     }
 
     /// <summary>
+    /// 行動停止
+    /// </summary>
+    public void Pause()
+    {
+        isMove = false;
+        animator.SetBool("isStop", true);
+        rigid.angularVelocity = Vector3.zero;
+    }
+
+    /// <summary>
     /// 更新
     /// </summary>
     private void Update()
