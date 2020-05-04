@@ -49,27 +49,36 @@ public class PlayerMover : MonoBehaviour
     /// <summary>
     /// 回転量Y
     /// </summary>
-    float rotateY = 0;
+    private float rotateY = 0;
     /// <summary>
     /// 回転量Z
     /// </summary>
-    float rotateZ = 0;
+    private float rotateZ = 0;
 
     /// <summary>
     /// 移動方向のキャッシュ
     /// </summary>
-    Vector3 playerMoveVec = Vector3.zero;
+    private Vector3 playerMoveVec = Vector3.zero;
 
     /// <summary>
     /// 入力量キャッシュ
     /// </summary>
-    float inputMagnitude = 0f;
+    private float inputMagnitude = 0f;
 
     /// <summary>
     /// 物理コンポーネントのキャッシュ
     /// </summary>
-    Rigidbody rigid = null;
+    private Rigidbody rigid = null;
 
+    /// <summary>
+    /// 移動しているか
+    /// </summary>
+    public bool IsMove { get; private set; } = false;
+
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
     private void Awake()
     {
         mainCameraTranfrom = Camera.main.transform;
@@ -81,6 +90,9 @@ public class PlayerMover : MonoBehaviour
         transform.LookAt(mainCameraTranfrom);
     }
 
+    /// <summary>
+    /// 更新
+    /// </summary>
     private void Update()
     {
         //初期化
@@ -104,12 +116,15 @@ public class PlayerMover : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 同時間フレーム更新
+    /// </summary>
     private void FixedUpdate()
     {
-        bool isStop = inputMagnitude <= moveThreshold;
-        animator.SetBool("isStop", isStop);
+        IsMove = inputMagnitude > moveThreshold;
+        animator.SetBool("isStop", !IsMove);
 
-        if (!isStop)
+        if (IsMove)
         {
             rigid.MovePosition(transform.position + playerMoveVec * Time.deltaTime * moveAmount);
             mainCameraTranfrom.position += new Vector3(playerMoveVec.x, 0, playerMoveVec.z) * Time.deltaTime * moveAmount;
@@ -120,7 +135,12 @@ public class PlayerMover : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /// <summary>
+    /// コリジョン設定
+    /// TODO: 削除予定
+    /// </summary>
+    /// <param name="_collision"></param>
+    private void OnCollisionEnter(Collision _collision)
     {
         //床に触れたらY座標を固定する
         if(rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
