@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PurserMover : MonoBehaviour
+public class PursuerMover : MonoBehaviour
 {
     /// <summary>
     /// 軌跡情報
@@ -44,12 +44,6 @@ public class PurserMover : MonoBehaviour
     Queue<TracingData> tracingQueue = new Queue<TracingData>();
 
     /// <summary>
-    /// 移動遅延時間
-    /// </summary>
-    [SerializeField]
-    private float moveDelayTime = 1f;
-
-    /// <summary>
     /// rigidbodyコンポーネント
     /// </summary>
     [SerializeField]
@@ -60,6 +54,17 @@ public class PurserMover : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Animator animator = null;
+
+    /// <summary>
+    /// キャラ表示ルートオブジェクト
+    /// </summary>
+    [SerializeField]
+    private GameObject charaLooksRoot = null;
+
+    /// <summary>
+    /// 移動遅延時間
+    /// </summary>
+    private float moveDelayTime = 1f;
 
     /// <summary>
     /// 時間
@@ -87,14 +92,17 @@ public class PurserMover : MonoBehaviour
     TracingData afterFrame = null;
 
     /// <summary>
-    /// 移動するか設定
+    /// 移動の記録開始
     /// </summary>
-    public void StartMove(Transform _targetTransform)
+    public void StartRecord(Transform _targetTransform, float _moveDelay)
     {
         targetTransform = _targetTransform;
+        moveDelayTime = _moveDelay;
 
         isMove = true;
         tracingQueue.Enqueue(new TracingData(moveDelayTime, targetTransform.position, targetTransform.rotation));
+
+        charaLooksRoot.SetActive(false);
     }
 
     /// <summary>
@@ -114,6 +122,11 @@ public class PurserMover : MonoBehaviour
         {
             //移動しない
             return;
+        }
+
+        if (!charaLooksRoot.activeSelf)
+        {
+            charaLooksRoot.SetActive(true);
         }
 
         if (animator.GetBool("isStop"))
