@@ -29,6 +29,8 @@ public class GameState : MonoBehaviour
 
     private List<PursuerMover> pursuerList = new List<PursuerMover>();
 
+    private bool isGameOver = false;
+
     private const float WAIT_NEXT_FLOOR = 2.0f;
 
     /// <summary>
@@ -49,6 +51,14 @@ public class GameState : MonoBehaviour
 
         createStage();
         createPlayer();
+    }
+
+    private void Update()
+    {
+        if (isGameOver && Input.GetKeyDown(KeyCode.R))
+        {
+            retryGame();
+        }
     }
 
     private void createStage()
@@ -118,6 +128,8 @@ public class GameState : MonoBehaviour
     /// </summary>
     private void collisionEnemy()
     {
+        isGameOver = true;
+
         AudioManager audioManager = AudioManager.Instance;
         audioManager.StopBGM();
         audioManager.StopSE();
@@ -127,8 +139,17 @@ public class GameState : MonoBehaviour
 
         stopAllChara();
 
+        uIManager.AppearRetryText();
+
         //現在の階の1つ下の階がクリア階となる
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(ScoreDataManager.Instance.Floor - 1);
+    }
+
+    private void retryGame()
+    {
+        ScoreDataManager.Instance.Reset();
+
+        SceneManager.LoadScene("Game");
     }
 
     /// <summary>
