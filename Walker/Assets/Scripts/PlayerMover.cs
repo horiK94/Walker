@@ -47,6 +47,12 @@ public class PlayerMover : MonoBehaviour
     private float cameraDistance = 5;
 
     /// <summary>
+    /// 衝突マネージャー
+    /// </summary>
+    [SerializeField]
+    private CollisionManager collisionManager = null;
+
+    /// <summary>
     /// 回転量Y
     /// </summary>
     private float rotateY = 0;
@@ -68,6 +74,7 @@ public class PlayerMover : MonoBehaviour
     /// <summary>
     /// 物理コンポーネントのキャッシュ
     /// </summary>
+    [SerializeField]
     private Rigidbody rigid = null;
 
     /// <summary>
@@ -89,7 +96,15 @@ public class PlayerMover : MonoBehaviour
         mainCameraTranfrom.Rotate(new Vector3(0, (maxRotateY + minRotateY) / 2, 0));
 
         animator.SetBool("isStop", false);
-        rigid = GetComponent<Rigidbody>();
+
+        collisionManager.AddOnCollisionEnter((_collision) =>
+        {
+            //床に触れたらY座標を固定する
+            if (rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
+            {
+                rigid.constraints |= RigidbodyConstraints.FreezePositionY;
+            }
+        });
 
         transform.LookAt(mainCameraTranfrom);
     }
@@ -156,20 +171,6 @@ public class PlayerMover : MonoBehaviour
         else
         {
             rigid.angularVelocity = Vector3.zero;
-        }
-    }
-
-    /// <summary>
-    /// コリジョン設定
-    /// TODO: 削除予定
-    /// </summary>
-    /// <param name="_collision"></param>
-    private void OnCollisionEnter(Collision _collision)
-    {
-        //床に触れたらY座標を固定する
-        if (rigid.constraints != (rigid.constraints | RigidbodyConstraints.FreezePositionY))
-        {
-            rigid.constraints |= RigidbodyConstraints.FreezePositionY;
         }
     }
 }
