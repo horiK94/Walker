@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Searcher : MonoBehaviour
 {
+    /// <summary>
+    /// 探索者チェックコンポーネント
+    /// </summary>
     [SerializeField]
     private SearchChecker searcherChecker = null;
 
+    /// <summary>
+    /// 移動コンポーネント
+    /// </summary>
     [SerializeField]
     private SearcherMover searcherMover = null;
 
-    [SerializeField]
+    /// <summary>
+    /// 探索待ち時間
+    /// </summary>
     private float waitTime = 4f;
 
     /// <summary>
@@ -18,6 +26,9 @@ public class Searcher : MonoBehaviour
     /// </summary>
     private Transform destinationPlayerTransform = null;
 
+    /// <summary>
+    /// 探索待ち残り時間
+    /// </summary>
     private float remainTime = 0;
 
     private State currentState = State.SEARCH;
