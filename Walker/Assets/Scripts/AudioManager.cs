@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
     [SerializeField]
     private AudioSource bgmAudioSource = null;
@@ -15,6 +15,12 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField]
     private AudioClip[] seAudioClips = null;
+
+    private void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
 
     public enum eBGMAudioClip
     {

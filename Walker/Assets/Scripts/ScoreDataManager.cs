@@ -9,6 +9,12 @@ public class ScoreDataManager : SingletonMonoBehaviour<ScoreDataManager>
     /// </summary>
     public int Floor { get; private set; } = 0;
 
+    private void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     /// <summary>
     /// リセット
     /// </summary>
