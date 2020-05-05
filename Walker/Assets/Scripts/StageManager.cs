@@ -47,6 +47,11 @@ public class StageManager : MonoBehaviour
     private Vector2Int stageSize = null;
 
     /// <summary>
+    /// 各要素のサイズを考慮しないステージ全体情報
+    /// </summary>
+    private eStageType[,] mazeDataNotConsiderElementsSize = null;
+
+    /// <summary>
     /// ステージ全体情報
     /// </summary>
     private eStageType[,] mazeData = null;
@@ -229,9 +234,8 @@ public class StageManager : MonoBehaviour
     {
         //ステージデータ作成
         MazeCreator mazeCreator = new MazeCreator();
-        eStageType[,] mazeDataNotConsiderElementsSize = mazeCreator.CreateMaze(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE, START_POINT, GOAL_POINT, ceilingPercentage);
-        eStageType[,] maze = convertMazeDataToStageSize(mazeDataNotConsiderElementsSize);
-        mazeData = maze;
+        mazeDataNotConsiderElementsSize = mazeCreator.CreateMaze(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE, START_POINT, GOAL_POINT, ceilingPercentage);
+        mazeData = convertMazeDataToStageSize(mazeDataNotConsiderElementsSize);
 
         //ステージの生成
         createStageObject(mazeData);
@@ -277,22 +281,6 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 選択したステージタイプか
-    /// </summary>
-    /// <param name="_checkType"></param>
-    /// <param name="_checkPoint">(0, 0) ～</param>
-    /// <returns></returns>
-    private bool isSelectStageType(eStageType _checkType, Vector2Int _checkPoint)
-    {
-        if (!isInside(_checkPoint))
-        {
-            return false;
-        }
-
-        return _checkType == mazeData[_checkPoint.x, _checkPoint.y];
-    }
-
-    /// <summary>
     /// ステージ内側位置か
     /// </summary>
     /// <param name="_checkPoint">(0, 0) ～</param>
@@ -310,7 +298,7 @@ public class StageManager : MonoBehaviour
     private Vector3 getPurposeCenterPosition(eStageType _purposeType)
     {
         Vector3 sumGoalPosition = Vector3.zero;
-        int goalPositionCount = 0;
+        int purposePositionCount = 0;
         for (int i = 0; i < mazeData.GetLength(0); i++)
         {
             for (int k = 0; k < mazeData.GetLength(1); k++)
@@ -318,11 +306,43 @@ public class StageManager : MonoBehaviour
                 if (mazeData[i, k] == _purposeType)
                 {
                     sumGoalPosition += new Vector3(i, 0, k);
-                    goalPositionCount++;
+                    purposePositionCount++;
                 }
             }
         }
-        return sumGoalPosition / goalPositionCount;
+
+        if (purposePositionCount == 0)
+        {
+            return Vector3.zero;
+        }
+        return sumGoalPosition / purposePositionCount;
+    }
+
+    /// <summary>
+    /// スタートと、ゴール以外の部屋の位置を返す
+    /// </summary>
+    /// <returns></returns>
+    public List<Vector3> GetRoomPositions()
+    {
+        Vector2Int floorSize = new Vector2Int(STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.x / 2 + 1, STAGE_SIZE_NOT_CONSIDER_ELEMENTS_SIZE.y / 2 + 1);
+
+        List<Vector3> candidatePositions = new List<Vector3>();
+        Vector3 candidatePos = Vector3.zero;
+        for (int i = 0; i < floorSize.x; i++)
+        {
+            candidatePos = new Vector3((ROOM_SIZE.x - 1) / 2.0f + OUTER_WALL_THICKNESS + i * (ROOM_SIZE.x + WALL_CANDIDATE_THICKNESS), 0, (ROOM_SIZE.y - 1) / 2.0f + OUTER_WALL_THICKNESS);
+            for (int j = 0; j < floorSize.y; j++)
+            {
+                if (mazeDataNotConsiderElementsSize[2 * i, 2 * j] != eStageType.START && mazeDataNotConsiderElementsSize[2 * i, 2 * j] != eStageType.GOAL)
+                {
+                    candidatePositions.Add(candidatePos);
+                }
+
+                candidatePos += new Vector3(0, 0, ROOM_SIZE.y + WALL_CANDIDATE_THICKNESS);
+            }
+        }
+
+        return candidatePositions;
     }
 
     /// <summary>
