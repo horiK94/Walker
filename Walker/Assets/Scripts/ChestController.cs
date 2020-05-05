@@ -26,7 +26,7 @@ public class ChestController : MonoBehaviour
         collisionManager.SetOnCollisionEnter((_collision) =>
         {
             //プレイヤーか判別
-            if (true)
+            if (_collision.gameObject.GetComponent<PlayerManager>() != null)
             {
                 particleController.PlayParticle();
                 _onCollsionPlayer();
