@@ -36,7 +36,7 @@ public class Searcher : MonoBehaviour
     enum State
     {
         SEARCH = 0,
-        DISCOVERY = 1,
+        CHASE = 1,
         STOP = 2
     }
 
@@ -77,12 +77,15 @@ public class Searcher : MonoBehaviour
             }
         }
 
-        if (currentState == State.DISCOVERY)
+        if (currentState == State.CHASE)
         {
-            discovery();
+            chase();
         }
     }
 
+    /// <summary>
+    /// 探索中
+    /// </summary>
     private void search()
     {
         RaycastHit hit;
@@ -92,14 +95,14 @@ public class Searcher : MonoBehaviour
             switch (currentState)
             {
                 case State.SEARCH:
-                    currentState = State.DISCOVERY;
-                    Debug.Log("<color=yellow>発見</color>");
+                    discovery();
+                    currentState = State.CHASE;
                     break;
             }
         }
         else
         {
-            if (currentState == State.DISCOVERY)
+            if (currentState == State.CHASE)
             {
                 currentState = State.SEARCH;
                 searcherMover.SearchStop();
@@ -107,7 +110,18 @@ public class Searcher : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 発見時
+    /// </summary>
     private void discovery()
+    {
+        //UI表示
+    }
+
+    /// <summary>
+    /// 発見中
+    /// </summary>
+    private void chase()
     {
         //発見中はキャラに向かって走る
         searcherMover.MoveToward(destinationPlayerTransform.transform);
