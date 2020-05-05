@@ -38,7 +38,6 @@ public class GameState : MonoBehaviour
     {
         ScoreDataManager scoreDataManager = ScoreDataManager.Instance;
 
-
         if (scoreDataManager.Floor == 0)
         {
             //初回起動時

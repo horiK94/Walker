@@ -19,7 +19,7 @@ public class Searcher : MonoBehaviour
     /// <summary>
     /// 探索待ち時間
     /// </summary>
-    private float waitTime = 4f;
+    private float waitTime = 2f;
 
     /// <summary>
     /// 目標となるプレイヤーインスタンス
