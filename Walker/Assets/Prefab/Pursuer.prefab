@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3805924528125144044}
   - component: {fileID: 3805924528125144045}
   - component: {fileID: 7012825287726170469}
+  - component: {fileID: 5461778379142031860}
   m_Layer: 8
   m_Name: Pursuer
   m_TagString: Untagged
@@ -79,6 +80,18 @@ MonoBehaviour:
   rigid: {fileID: 3805924528125144044}
   animator: {fileID: 3855305734338601704}
   charaLooksRoot: {fileID: 3806928509687130498}
+--- !u!114 &5461778379142031860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805924528125144047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a15d3e21eacc74fb288e95c25a6152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3806266392755460808
 GameObject:
   m_ObjectHideFlags: 0

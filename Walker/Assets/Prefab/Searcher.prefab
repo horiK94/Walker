@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9077292954744689336}
   - component: {fileID: 9077292954744689339}
   - component: {fileID: 9077292954744689338}
+  - component: {fileID: -7819539087412714162}
   m_Layer: 9
   m_Name: Searcher
   m_TagString: Untagged
@@ -81,7 +82,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   searcherChecker: {fileID: 9077292954744689338}
   searcherMover: {fileID: 9077292954744689339}
-  waitTime: 3
 --- !u!114 &9077292954744689339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +111,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canSearchDistance: 10
   canSearchAngle: 270
+--- !u!114 &-7819539087412714162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805924528125144047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a15d3e21eacc74fb288e95c25a6152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3806266392755460808
 GameObject:
   m_ObjectHideFlags: 0
