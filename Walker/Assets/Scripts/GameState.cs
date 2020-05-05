@@ -73,7 +73,7 @@ public class GameState : MonoBehaviour
         player = Instantiate(playerPrefab, startPos + 2 * Vector3.up, Quaternion.LookRotation(stageManager.GetGoalCenterPosition(), Vector3.up));
         playerManager = player.GetComponent<PlayerManager>();
         playerManager.SetFirstMoveAction(createEnemy);
-        playerManager.SetOnCollisionEnemyAction(losePlayer);
+        playerManager.SetOnCollisionEnemyAction(collisionEnemy);
     }
 
     /// <summary>
@@ -113,7 +113,10 @@ public class GameState : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    private void losePlayer()
+    /// <summary>
+    /// 敵キャラと衝突時
+    /// </summary>
+    private void collisionEnemy()
     {
         AudioManager audioManager = AudioManager.Instance;
         audioManager.StopBGM();
@@ -123,6 +126,9 @@ public class GameState : MonoBehaviour
         audioManager.SetSESpatialBlend(false);
 
         stopAllChara();
+
+        //現在の階の1つ下の階がクリア階となる
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(ScoreDataManager.Instance.Floor - 1);
     }
 
     /// <summary>

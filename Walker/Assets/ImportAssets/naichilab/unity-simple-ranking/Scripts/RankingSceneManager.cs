@@ -12,7 +12,7 @@ namespace naichilab
         private const string OBJECT_ID = "objectId";
         private const string COLUMN_SCORE = "score";
         private const string COLUMN_NAME = "name";
-
+        private const string VERSION_TEXT = "version";
 
         [SerializeField] Text captionLabel;
         [SerializeField] Text scoreLabel;
@@ -88,6 +88,7 @@ namespace naichilab
 
                 var hiScoreCheck = new YieldableNcmbQuery<NCMBObject>(_board.ClassName);
                 hiScoreCheck.WhereEqualTo(OBJECT_ID, ObjectID);
+                hiScoreCheck.WhereEqualTo(VERSION_TEXT, GameSetting.VERSION_ID);
                 yield return hiScoreCheck.FindAsync();
 
                 if (hiScoreCheck.Count > 0)
@@ -155,6 +156,7 @@ namespace naichilab
 
             _ncmbRecord[COLUMN_NAME] = InputtedNameForSave;
             _ncmbRecord[COLUMN_SCORE] = _lastScore.Value;
+            _ncmbRecord[VERSION_TEXT] = GameSetting.VERSION_ID;
             NCMBException errorResult = null;
 
             yield return _ncmbRecord.YieldableSaveAsync(error => errorResult = error);
@@ -194,6 +196,7 @@ namespace naichilab
 
             var so = new YieldableNcmbQuery<NCMBObject>(_board.ClassName);
             so.Limit = 30;
+            so.WhereEqualTo(VERSION_TEXT, GameSetting.VERSION_ID);
             if (_board.Order == ScoreOrder.OrderByAscending)
             {
                 so.OrderByAscending(COLUMN_SCORE);
@@ -225,7 +228,7 @@ namespace naichilab
                     var s = _board.BuildScore(r[COLUMN_SCORE].ToString());
                     rankNode.ScoreText.text = s != null ? s.TextForDisplay : "エラー";
 
-//                    Debug.Log(r[COLUMN_SCORE].ToString());
+                    //                    Debug.Log(r[COLUMN_SCORE].ToString());
                 }
             }
             else
