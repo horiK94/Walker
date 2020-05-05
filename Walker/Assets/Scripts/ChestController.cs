@@ -23,7 +23,7 @@ public class ChestController : MonoBehaviour
     /// <param name="_onCollsionPlayer"></param>
     public void Init(Action _onCollsionPlayer)
     {
-        collisionManager.SetOnCollisionEnter((_collision) =>
+        collisionManager.AddOnCollisionEnter((_collision) =>
         {
             //プレイヤーか判別
             if (_collision.gameObject.GetComponent<PlayerManager>() != null)
