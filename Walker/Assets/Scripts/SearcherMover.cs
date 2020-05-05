@@ -39,4 +39,9 @@ public class SearcherMover : MonoBehaviour
         rigid.MovePosition(movePoint);
         transform.LookAt(_destinationTransform, transform.up);
     }
+
+    public void SetRotate(float _angle)
+    {
+        rigid.MoveRotation(Quaternion.Euler(0, _angle, 0));
+    }
 }

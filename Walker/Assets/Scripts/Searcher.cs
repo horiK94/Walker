@@ -33,6 +33,8 @@ public class Searcher : MonoBehaviour
 
     private State currentState = State.SEARCH;
 
+    private float LAP_ANGLE = 360.0f;
+
     enum State
     {
         SEARCH = 0,
@@ -72,6 +74,8 @@ public class Searcher : MonoBehaviour
             search();
             if (currentState == State.SEARCH)
             {
+                //ランダムで角度を変える
+                searcherMover.SetRotate(Random.Range(0, LAP_ANGLE));
                 remainTime += waitTime;
                 return;
             }
