@@ -37,6 +37,11 @@ public class StageManager : MonoBehaviour
     private readonly Vector2Int GOAL_POINT = new Vector2Int(0, 0);
 
     /// <summary>
+    /// 床レイヤー番号
+    /// </summary>
+    private const int FLOOR_LAYER_ID = 12;
+
+    /// <summary>
     /// ステージの全長(外枠、壁、部屋の全大きさ)
     /// </summary>
     private Vector2Int stageSize = null;
@@ -371,6 +376,7 @@ public class StageManager : MonoBehaviour
         GameObject floorColliderObj = Instantiate(colliderPrefab, parentTransform) as GameObject;
         floorColliderObj.transform.position = new Vector3(stageSize.x, 0, stageSize.y) / 2;
         floorColliderObj.GetComponent<BoxCollider>().size = new Vector3(stageSize.x, 1, stageSize.y);
+        floorColliderObj.layer = FLOOR_LAYER_ID;
 
         //壁等のコライダー作成
         var colliderPosList = calcColliderPositionList();
