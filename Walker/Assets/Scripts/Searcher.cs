@@ -115,7 +115,9 @@ public class Searcher : MonoBehaviour
     /// </summary>
     private void discovery()
     {
-        //UI表示
+        AudioManager audioManager = AudioManager.Instance;
+        audioManager.PlayOneShotSE(AudioManager.eSEAudioClip.DISCOVERY);
+        audioManager.SetSESpatialBlend(false);
     }
 
     /// <summary>

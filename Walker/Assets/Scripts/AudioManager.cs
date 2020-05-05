@@ -30,6 +30,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     public enum eSEAudioClip
     {
         WHISTLE = 0,
+        DISCOVERY
     }
 
     public void PlayBGM(eBGMAudioClip _audioClip)
@@ -48,9 +49,13 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         seAudioSource.PlayOneShot(seAudioClips[(int)_audioClip]);
     }
 
-
     public void StopSE()
     {
         seAudioSource.Stop();
+    }
+
+    public void SetSESpatialBlend(bool _is2D)
+    {
+        seAudioSource.spatialBlend = _is2D ? 0 : 1;
     }
 }
