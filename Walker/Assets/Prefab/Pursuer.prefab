@@ -80,6 +80,7 @@ MonoBehaviour:
   rigid: {fileID: 3805924528125144044}
   animator: {fileID: 3855305734338601704}
   charaLooksRoot: {fileID: 3806928509687130498}
+  colliderComp: {fileID: 3805924528125144045}
 --- !u!114 &5461778379142031860
 MonoBehaviour:
   m_ObjectHideFlags: 0

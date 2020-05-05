@@ -61,6 +61,9 @@ public class PursuerMover : MonoBehaviour
     [SerializeField]
     private GameObject charaLooksRoot = null;
 
+    [SerializeField]
+    private Collider colliderComp = null;
+
     /// <summary>
     /// 移動遅延時間
     /// </summary>
@@ -103,6 +106,7 @@ public class PursuerMover : MonoBehaviour
         tracingQueue.Enqueue(new TracingData(moveDelayTime, targetTransform.position, targetTransform.rotation));
 
         charaLooksRoot.SetActive(false);
+        colliderComp.enabled = false;
     }
 
     /// <summary>
@@ -137,6 +141,7 @@ public class PursuerMover : MonoBehaviour
         if (!charaLooksRoot.activeSelf)
         {
             charaLooksRoot.SetActive(true);
+            colliderComp.enabled = true;
         }
 
         if (animator.GetBool("isStop"))
