@@ -25,6 +25,8 @@ public class GameState : MonoBehaviour
 
     private PlayerManager playerManager = null;
 
+    List<Vector3> candidateSearcherPositions = null;
+
     private List<Searcher> searcherList = new List<Searcher>();
 
     private List<PursuerMover> pursuerList = new List<PursuerMover>();
@@ -66,7 +68,9 @@ public class GameState : MonoBehaviour
         //ステージ生成
         stageManager.CreateStage();
 
-        //ステージ設定
+        candidateSearcherPositions = stageManager.GetRoomPositions();
+
+        //ゴール設定
         stageManager.GoalInstance.GetComponent<ChestController>().Init(() =>
         {
             arriveGoal();
@@ -91,14 +95,28 @@ public class GameState : MonoBehaviour
     /// </summary>
     private void createEnemy()
     {
-        Vector3 createGoalPoint = stageManager.GetGoalCenterPosition() + Vector3.up;
+        createSearcher();
+        createPursuer(3.0f);
+    }
+
+    private void createSearcher()
+    {
+        int drewNumber = Random.Range(0, candidateSearcherPositions.Count);
+
+        Vector3 createGoalPoint = candidateSearcherPositions[drewNumber] + Vector3.up;
         Searcher searcher = enemyCreator.CreateSearcher(createGoalPoint).GetComponent<Searcher>();
         searcher.SetPlayerTransform(player.transform);
         searcherList.Add(searcher);
 
+        candidateSearcherPositions.RemoveAt(drewNumber);
+    }
+
+    private void createPursuer(float _delayTime)
+    {
+        //追跡者の生成
         Vector3 createStartPoint = stageManager.GetStartCenterPosition() + Vector3.up;
         PursuerMover pursuerMover = enemyCreator.CreatePursuer(createStartPoint).GetComponent<PursuerMover>();
-        pursuerMover.StartRecord(player.transform, 3.0f);
+        pursuerMover.StartRecord(player.transform, _delayTime);
         pursuerList.Add(pursuerMover);
     }
 
