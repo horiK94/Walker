@@ -42,7 +42,7 @@ public class GameState : MonoBehaviour
     /// <summary>
     /// 初期化
     /// </summary>
-    private void Awake()
+    private void Start()
     {
         ScoreDataManager scoreDataManager = ScoreDataManager.Instance;
 
