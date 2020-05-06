@@ -142,6 +142,79 @@ MonoBehaviour:
     type: 3}
   pursuerPrefab: {fileID: 5478467318195759472, guid: e6238d2f0e6d8a24197bc60b09684b89,
     type: 3}
+--- !u!114 &277452687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277452684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db4e5ea43845cf45b583896b7b38a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyParams:
+  - searcher: 0
+    pursuer: 1
+  - searcher: 0
+    pursuer: 1
+  - searcher: 1
+    pursuer: 1
+  - searcher: 1
+    pursuer: 1
+  - searcher: 1
+    pursuer: 1
+  - searcher: 2
+    pursuer: 1
+  - searcher: 2
+    pursuer: 1
+  - searcher: 2
+    pursuer: 1
+  - searcher: 2
+    pursuer: 2
+  - searcher: 2
+    pursuer: 2
+  - searcher: 3
+    pursuer: 2
+  - searcher: 3
+    pursuer: 2
+  - searcher: 3
+    pursuer: 3
+  - searcher: 3
+    pursuer: 3
+  - searcher: 4
+    pursuer: 3
+  - searcher: 4
+    pursuer: 3
+  - searcher: 2
+    pursuer: 3
+  - searcher: 2
+    pursuer: 3
+  - searcher: 3
+    pursuer: 3
+  - searcher: 3
+    pursuer: 3
+  - searcher: 4
+    pursuer: 3
+  - searcher: 4
+    pursuer: 3
+  - searcher: 4
+    pursuer: 4
+  - searcher: 4
+    pursuer: 4
+  - searcher: 5
+    pursuer: 4
+  - searcher: 5
+    pursuer: 4
+  - searcher: 5
+    pursuer: 5
+  - searcher: 6
+    pursuer: 5
+  - searcher: 6
+    pursuer: 5
+  - searcher: 7
+    pursuer: 5
 --- !u!1001 &393320277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -889,7 +962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -982,7 +1055,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 1033464426}
   enemyCreator: {fileID: 277452686}
-  uIManager: {fileID: 0}
+  enemyAppearanceParameter: {fileID: 277452687}
+  uIManager: {fileID: 1818464792}
   playerPrefab: {fileID: 5271562220492839820, guid: 5a0df2765b887ca4ba75229e8fa98aca,
     type: 3}
 --- !u!1 &1752566728
