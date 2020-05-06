@@ -3612,7 +3612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1341158939481312961}
-  moveSpeed: 1.5
+  moveSpeed: 2
   rigid: {fileID: 6923675519522626649}
 --- !u!114 &2971689501846938895
 MonoBehaviour:

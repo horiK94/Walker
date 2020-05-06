@@ -17,9 +17,9 @@ public class Searcher : MonoBehaviour
     private SearcherMover searcherMover = null;
 
     /// <summary>
-    /// 探索待ち時間
+    /// 角度変更待ち時間
     /// </summary>
-    private float waitTime = 2f;
+    private float rotateWaitTime = 1f;
 
     /// <summary>
     /// 目標となるプレイヤーインスタンス
@@ -27,11 +27,11 @@ public class Searcher : MonoBehaviour
     private Transform destinationPlayerTransform = null;
 
     /// <summary>
-    /// 探索待ち残り時間
+    /// 角度変更待ち時間
     /// </summary>
-    private float remainTime = 0;
+    private float waitTime = 0;
 
-    private State currentState = State.SEARCH;
+    private State currentState = State.STOP;
 
     private float LAP_ANGLE = 360.0f;
 
@@ -76,15 +76,15 @@ public class Searcher : MonoBehaviour
             return;
         }
 
-        remainTime -= Time.deltaTime;
-        if (remainTime < 0)
+        search();
+        if (currentState == State.SEARCH)
         {
-            search();
-            if (currentState == State.SEARCH)
+            waitTime -= Time.deltaTime;
+            if (waitTime < 0)
             {
                 //ランダムで角度を変える
                 searcherMover.SetRotate(Random.Range(0, LAP_ANGLE));
-                remainTime += waitTime;
+                waitTime += rotateWaitTime;
                 return;
             }
         }
