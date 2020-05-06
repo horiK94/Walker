@@ -193,7 +193,7 @@ public class GameState : MonoBehaviour
 
         stopAllChara();
 
-        uIManager.AppearRetryText();
+        uIManager.ApplyGameOverUI();
 
         //現在の階の1つ下の階がクリア階となる
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(ScoreDataManager.Instance.Floor - 1);
