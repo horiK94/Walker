@@ -182,6 +182,11 @@ public class GameState : MonoBehaviour
     /// </summary>
     private void collisionEnemy()
     {
+        if (isGameOver)
+        {
+            return;
+        }
+
         isGameOver = true;
 
         AudioManager audioManager = AudioManager.Instance;

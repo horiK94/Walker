@@ -116,6 +116,7 @@ public class PlayerMover : MonoBehaviour
     {
         animator.SetBool("isStop", true);
         isPause = true;
+        rigid.angularVelocity = Vector3.zero;
     }
 
     /// <summary>
