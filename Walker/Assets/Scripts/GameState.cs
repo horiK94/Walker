@@ -10,6 +10,8 @@ public class GameState : MonoBehaviour
     [SerializeField]
     private EnemyCreator enemyCreator = null;
     [SerializeField]
+    private EnemyAppearanceParameter enemyAppearanceParameter = null;
+    [SerializeField]
     private UIManager uIManager = null;
 
     /// <summary>
@@ -31,6 +33,8 @@ public class GameState : MonoBehaviour
 
     private List<PursuerMover> pursuerList = new List<PursuerMover>();
 
+    private EnemyAppearanceParameter.EnemyParam currentFloorEnemyParam = null;
+
     private bool isGameOver = false;
 
     private const float WAIT_NEXT_FLOOR = 2.0f;
@@ -51,8 +55,12 @@ public class GameState : MonoBehaviour
         scoreDataManager.GoUpstairs();
         uIManager.SetFloor(scoreDataManager.Floor);
 
+        //現在の階の敵情報を取得
+        currentFloorEnemyParam = enemyAppearanceParameter.GetParameter(scoreDataManager.Floor);
+
         createStage();
         createPlayer();
+        createSearchers(currentFloorEnemyParam.Searcher);
     }
 
     private void Update()
@@ -86,19 +94,24 @@ public class GameState : MonoBehaviour
         Vector3 startPos = stageManager.GetStartCenterPosition();
         player = Instantiate(playerPrefab, startPos + 2 * Vector3.up, Quaternion.LookRotation(stageManager.GetGoalCenterPosition(), Vector3.up));
         playerManager = player.GetComponent<PlayerManager>();
-        playerManager.SetFirstMoveAction(createEnemy);
+        playerManager.SetFirstMoveAction(() => { createPursuers(currentFloorEnemyParam.Pursuer); });
         playerManager.SetOnCollisionEnemyAction(collisionEnemy);
     }
 
     /// <summary>
-    /// 敵の生成
+    /// 探索者達の生成
     /// </summary>
-    private void createEnemy()
+    private void createSearchers(int _num)
     {
-        createSearcher();
-        createPursuer(3.0f);
+        for (int i = 0; i < _num; i++)
+        {
+            createSearcher();
+        }
     }
 
+    /// <summary>
+    /// 探索者の生成
+    /// </summary>
     private void createSearcher()
     {
         int drewNumber = Random.Range(0, candidateSearcherPositions.Count);
@@ -111,6 +124,21 @@ public class GameState : MonoBehaviour
         candidateSearcherPositions.RemoveAt(drewNumber);
     }
 
+    /// <summary>
+    /// 追跡者達の生成
+    /// </summary>
+    private void createPursuers(int _num)
+    {
+        for (int i = 0; i < _num; i++)
+        {
+            createPursuer(3.0f + i + 2.0f);
+        }
+    }
+
+    /// <summary>
+    /// 追跡者の生成
+    /// </summary>
+    /// <param name="_delayTime"></param>
     private void createPursuer(float _delayTime)
     {
         //追跡者の生成
