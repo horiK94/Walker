@@ -330,15 +330,12 @@ public class StageManager : MonoBehaviour
         Vector3 candidatePos = Vector3.zero;
         for (int i = 0; i < floorSize.x; i++)
         {
-            candidatePos = new Vector3((ROOM_SIZE.x - 1) / 2.0f + OUTER_WALL_THICKNESS + i * (ROOM_SIZE.x + WALL_CANDIDATE_THICKNESS), 0, (ROOM_SIZE.y - 1) / 2.0f + OUTER_WALL_THICKNESS);
             for (int j = 0; j < floorSize.y; j++)
             {
                 if (mazeDataNotConsiderElementsSize[2 * i, 2 * j] != eStageType.START && mazeDataNotConsiderElementsSize[2 * i, 2 * j] != eStageType.GOAL)
                 {
-                    candidatePositions.Add(candidatePos);
+                    candidatePositions.Add(new Vector3((ROOM_SIZE.x - 1) / 2.0f + OUTER_WALL_THICKNESS + i * (ROOM_SIZE.x + WALL_CANDIDATE_THICKNESS), 0, (ROOM_SIZE.y - 1) / 2.0f + OUTER_WALL_THICKNESS + j * (ROOM_SIZE.y + WALL_CANDIDATE_THICKNESS)));
                 }
-
-                candidatePos += new Vector3(0, 0, ROOM_SIZE.y + WALL_CANDIDATE_THICKNESS);
             }
         }
 
