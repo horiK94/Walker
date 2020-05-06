@@ -94,7 +94,14 @@ public class GameState : MonoBehaviour
         Vector3 startPos = stageManager.GetStartCenterPosition();
         player = Instantiate(playerPrefab, startPos + 2 * Vector3.up, Quaternion.LookRotation(stageManager.GetGoalCenterPosition(), Vector3.up));
         playerManager = player.GetComponent<PlayerManager>();
-        playerManager.SetFirstMoveAction(() => { createPursuers(currentFloorEnemyParam.Pursuer); });
+        playerManager.SetFirstMoveAction(() =>
+        {
+            for (int i = 0; i < searcherList.Count; i++)
+            {
+                searcherList[i].Play();
+            }
+            createPursuers(currentFloorEnemyParam.Pursuer);
+        });
         playerManager.SetOnCollisionEnemyAction(collisionEnemy);
     }
 
@@ -119,6 +126,7 @@ public class GameState : MonoBehaviour
         Vector3 createGoalPoint = candidateSearcherPositions[drewNumber] + Vector3.up;
         Searcher searcher = enemyCreator.CreateSearcher(createGoalPoint).GetComponent<Searcher>();
         searcher.SetPlayerTransform(player.transform);
+        searcher.Pause();
         searcherList.Add(searcher);
 
         candidateSearcherPositions.RemoveAt(drewNumber);

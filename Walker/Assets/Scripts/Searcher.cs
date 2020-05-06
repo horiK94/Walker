@@ -61,6 +61,14 @@ public class Searcher : MonoBehaviour
         searcherMover.SearchStop();
     }
 
+    /// <summary>
+    /// 動作開始
+    /// </summary>
+    public void Play()
+    {
+        currentState = State.SEARCH;
+    }
+
     private void Update()
     {
         if (currentState == State.STOP)
@@ -120,8 +128,8 @@ public class Searcher : MonoBehaviour
     private void discovery()
     {
         AudioManager audioManager = AudioManager.Instance;
-        audioManager.PlayOneShotSE(AudioManager.eSEAudioClip.DISCOVERY);
         audioManager.SetSESpatialBlend(false);
+        audioManager.PlayOneShotSE(AudioManager.eSEAudioClip.DISCOVERY);
     }
 
     /// <summary>
