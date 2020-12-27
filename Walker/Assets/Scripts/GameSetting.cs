@@ -12,5 +12,5 @@ public static class GameSetting
     /// <summary>
     /// バージョンID
     /// </summary>
-    public static int VERSION_ID = 100;
+    public static int VERSION_ID = 110;
 }
